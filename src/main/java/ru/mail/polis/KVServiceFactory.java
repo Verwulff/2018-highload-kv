@@ -16,8 +16,6 @@
 
 package ru.mail.polis;
 
-import one.nio.http.HttpServerConfig;
-import one.nio.server.AcceptorConfig;
 import org.jetbrains.annotations.NotNull;
 import ru.mail.polis.Karandashov.KVServiceImpl;
 
@@ -57,10 +55,6 @@ final class KVServiceFactory {
             throw new IllegalArgumentException("Port out of range");
         }
 
-        HttpServerConfig serverConfig = new HttpServerConfig();
-        AcceptorConfig acceptorConfig = new AcceptorConfig();
-        acceptorConfig.port = port;
-        serverConfig.acceptors = new AcceptorConfig[]{acceptorConfig};
         return new KVServiceImpl(port, dao, topology);
     }
 }

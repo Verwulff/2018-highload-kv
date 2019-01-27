@@ -1,12 +1,18 @@
 package ru.mail.polis.Karandashov.utils;
 
-public class ReplicaInfo {
+public class RequestInfo {
 
+    private String id;
     private int ack;
     private int from;
-    private boolean isValid = false;
+    private boolean proxied;
 
-    public ReplicaInfo(String replicas, int topologyLength) {
+    public RequestInfo(String id, String replicas, int topologyLength, String proxied) {
+        if (id == null || id.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        this.id = id;
+        this.proxied = proxied != null;
         if (replicas == null) {
             ack = topologyLength / 2 + 1;
             from = topologyLength;
@@ -18,10 +24,9 @@ public class ReplicaInfo {
         }
         ack = Integer.parseInt(parts[0]);
         from = Integer.parseInt(parts[1]);
-        if (ack <= 0 || ack > from || from < 0) {
+        if (ack <= 0 || ack > from) {
             throw new IllegalArgumentException();
         }
-        isValid = true;
     }
 
     public int getAck() {
@@ -32,7 +37,11 @@ public class ReplicaInfo {
         return from;
     }
 
-    public boolean isValid() {
-        return isValid;
+    public String getId() {
+        return id;
+    }
+
+    public boolean isProxied() {
+        return proxied;
     }
 }

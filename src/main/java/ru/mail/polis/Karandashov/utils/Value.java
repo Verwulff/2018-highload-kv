@@ -1,33 +1,36 @@
 package ru.mail.polis.Karandashov.utils;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Value implements Serializable {
 
-    public static final byte[] EMPTY_DATA = new byte[]{};
-    public static int PRESENT = 0;
-    public static int DELETED = 1;
-    public static int UNKNOWN = 2;
     public byte[] data;
     private long timestamp;
-    private int state;
+    public static final byte[] EMPTY_DATA = new byte[0];
+    public static final Value UNKNOWN = new Value(EMPTY_DATA, 0, stateCode.UNKNOWN);
+    private stateCode state;
 
     public Value() {
-        data = EMPTY_DATA;
-        timestamp = 0;
-        state = UNKNOWN;
+        this.data = EMPTY_DATA;
+        this.timestamp = System.currentTimeMillis();
+        this.state = stateCode.DELETED;
     }
 
-    public Value(byte[] value, long timestamp) {
+    public Value(byte[] value) {
         this.data = value;
-        this.timestamp = timestamp;
-        state = PRESENT;
+        this.timestamp = System.currentTimeMillis();
+        state = stateCode.PRESENT;
     }
 
-    public Value(byte[] value, long timestamp, int state) {
+    public Value(byte[] value, long timestamp, stateCode state) {
         this.data = value;
         this.timestamp = timestamp;
         this.state = state;
+    }
+
+    public stateCode getState() {
+        return state;
     }
 
     public byte[] getData() {
@@ -38,8 +41,18 @@ public class Value implements Serializable {
         return timestamp;
     }
 
-    public int getState() {
-        return state;
+    @Override
+    public String toString() {
+        return "Value{" +
+                "data=" + Arrays.toString(data) +
+                ", timestamp=" + timestamp +
+                ", state=" + state +
+                '}';
     }
 
+    public enum stateCode {
+        PRESENT,
+        DELETED,
+        UNKNOWN
+    }
 }
